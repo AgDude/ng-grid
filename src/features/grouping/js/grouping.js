@@ -938,7 +938,7 @@
         // processes each of the fields we are grouping by, checks if the value has changed and inserts a groupHeader
         // Broken out as shouldn't create functions in a loop.
         var updateProcessingState = function( groupFieldState, stateIndex ) {
-          var fieldValue = grid.getCellValue(row, groupFieldState.col);
+          var fieldValue = groupFieldState.col.sortCellFiltered ? grid.getCellDisplayValue(row, groupFieldState.col) : grid.getCellValue(row, groupFieldState.col);
 
           // look for change of value - and insert a header
           if ( !groupFieldState.initialised || rowSorter.getSortFn(grid, groupFieldState.col, renderableRows)(fieldValue, groupFieldState.currentValue) !== 0 ){
@@ -1090,7 +1090,7 @@
         headerRow.enableCellEdit = false;
         headerRow.enableSelection = grid.options.enableGroupHeaderSelection;
         processingState[stateIndex].initialised = true;
-        processingState[stateIndex].currentValue = newValue;
+        processingState[stateIndex].currentValue = col.sortCellFiltered ? grid.getCellDisplayValue(renderableRows[rowIndex], col) : newValue;
         processingState[stateIndex].currentRow = headerRow;
 
         // set all processing states below this one to not be initialised - change of this state
